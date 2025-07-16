@@ -23,4 +23,32 @@ model Usuarios{
   funcao Int @default(1)
   telefone String
   cidade String
+  turmaId Int
+
+  turma Turmas @relation(fields: [turmaId], references: [id])
+
+
+}
+
+model Turmas{
+  id Int @id @default(autoincrement())
+  nome String
+  professorId Int
+  alunos Usuarios[]
+  materias TurmasMateriais []
+
+
+}
+
+model Materias{
+  id Int @id @default(autoincrement())
+  nome String
+  turmas TurmasMateriais[]
+
+}
+
+model TurmasMateriais {
+  id Int @id @default(autoincrement())
+  turmas Turmas[]
+  materias Materias[] 
 }

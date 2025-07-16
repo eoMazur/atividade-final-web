@@ -19,7 +19,7 @@ export class CreateUsuarioDto {
     email: string;
 
     @IsEnum(Funcao)
-    cargo: number;
+    funcao: number;
 
     @IsString()
     @MinLength(13)
