@@ -23,9 +23,9 @@ model Usuarios{
   funcao Int @default(1)
   telefone String
   cidade String
-  turmaId Int
+  turmaId Int?
 
-  turma Turmas @relation(fields: [turmaId], references: [id])
+  turma Turmas? @relation(fields: [turmaId], references: [id])
 
 
 }
@@ -50,6 +50,8 @@ model Materias{
 
 model TurmasMateriais {
   id Int @id @default(autoincrement())
-  turmas Turmas[]
-  materias Materias[] 
+  turmaId Int
+  turmas Turmas @relation(fields: [turmaId], references: [id])
+  materiasId Int
+  materias Materias @relation(fields: [materiasId], references: [id])
 }

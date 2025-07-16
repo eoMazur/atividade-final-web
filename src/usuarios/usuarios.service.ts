@@ -28,9 +28,9 @@ export class UsuariosService {
   async findOne(id: number) {
     await this.verificarUsuario(id);
 
-    const usuario = this.prisma.usuarios.findUnique({
+    const usuario = await this.prisma.usuarios.findUnique({
       where: {
-        id: id
+        id
       }
     })
 
