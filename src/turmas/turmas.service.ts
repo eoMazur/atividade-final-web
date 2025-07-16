@@ -35,6 +35,24 @@ export class TurmasService {
             {id: adicionarAlunoTurmaDto.alunoId}
           ]
         }
+      },
+      include: {
+        alunos: {
+          select: {
+            id: true,
+            nome: true
+          }
+        },
+        materias: {
+          select: {
+            materias: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
       }
     })
   }
@@ -51,6 +69,24 @@ export class TurmasService {
           create: [
             {materiasId: materiaTurmaDto.materiaId}
           ]
+        }
+      },
+      include: {
+        alunos: {
+          select: {
+            id: true,
+            nome: true
+          }
+        },
+        materias: {
+          select: {
+            materias: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
         }
       }
     })
@@ -87,6 +123,24 @@ export class TurmasService {
     return this.prisma.turmas.findUnique({
       where: {
         id: id
+      },
+      include: {
+        alunos: {
+          select: {
+            id: true,
+            nome: true
+          }
+        },
+        materias: {
+          select: {
+            materias: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -98,16 +152,58 @@ export class TurmasService {
       where: {
         id: id
       },
-      data: updateTurmaDto
+      data: updateTurmaDto,
+      include: {
+        alunos: {
+          select: {
+            id: true,
+            nome: true
+          }
+        },
+        materias: {
+          select: {
+            materias: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
+      }
     });
   }
 
   async remove(id: number) {
     await this.verificarTurma(id);
 
-    return this.prisma.turmas.delete({
+      await this.prisma.turmasMateriais.deleteMany({
+        where: {
+          turmaId: id
+        }
+      });
+
+      return await this.prisma.turmas.delete({
       where: {
         id: id
+      },
+      include: {
+        alunos: {
+          select: {
+            id: true,
+            nome: true
+          }
+        },
+        materias: {
+          select: {
+            materias: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
       }
     });
   }

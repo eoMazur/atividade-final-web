@@ -31,17 +31,17 @@ export class TurmasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@ParamId() id: number) {
     return this.turmasService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTurmaDto: UpdateTurmaDto) {
+  update(@ParamId() id: number, @Body() updateTurmaDto: UpdateTurmaDto) {
     return this.turmasService.update(+id, updateTurmaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@ParamId() id: number) {
     return this.turmasService.remove(+id);
   }
 }

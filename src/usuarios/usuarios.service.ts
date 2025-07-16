@@ -18,7 +18,16 @@ export class UsuariosService {
   }
 
   async findAll() {
-    const usuarios = this.prisma.usuarios.findMany();
+    const usuarios = this.prisma.usuarios.findMany({
+      include: {
+        turma: {
+          select: {
+            id: true,
+            nome: true
+          }
+        }
+      }
+    });
 
     return (await usuarios).map(usuario => {
       return plainToInstance(ResponseUsuariosDto, usuario);
@@ -31,6 +40,14 @@ export class UsuariosService {
     const usuario = await this.prisma.usuarios.findUnique({
       where: {
         id
+      },
+      include: {
+        turma: {
+          select: {
+            id: true,
+            nome: true
+          }
+        }
       }
     })
 
@@ -50,6 +67,14 @@ export class UsuariosService {
       },
       where: {
         id: id
+      },
+      include: {
+        turma: {
+          select: {
+            id: true,
+            nome: true
+          }
+        }
       }
     });
 
@@ -61,6 +86,14 @@ export class UsuariosService {
     return this.prisma.usuarios.delete({
       where: {
         id: id
+      },
+      include: {
+        turma: {
+          select: {
+            id: true,
+            nome: true
+          }
+        }
       }
     });
   }

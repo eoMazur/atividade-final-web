@@ -16,7 +16,20 @@ export class MateriasService {
   }
 
   async findAll() {
-    return this.prisma.materias.findMany();
+    return this.prisma.materias.findMany({
+      include: {
+        turmas: {
+          select: {
+            turmas: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
+      }
+    });
   }
 
   async findOne(id: number) {
@@ -25,6 +38,18 @@ export class MateriasService {
     return this.prisma.materias.findUnique({
       where: {
         id: id
+      },
+      include: {
+        turmas: {
+          select: {
+            turmas: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -36,18 +61,49 @@ export class MateriasService {
       where: {
         id: id
       },
-      data: updateMateriaDto
+      data: updateMateriaDto,
+      include: {
+        turmas: {
+          select: {
+            turmas: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
+      }
     });
   }
 
   async remove(id: number) {
     await this.verificarMaterias(id);
 
-    return this.prisma.materias.delete({
+      await this.prisma.turmasMateriais.deleteMany({
+        where: {
+          materiasId: id
+        }
+      });
+
+      return await this.prisma.materias.delete({
       where: {
         id: id
+      },
+      include: {
+        turmas: {
+          select: {
+            turmas: {
+              select: {
+                id: true,
+                nome: true
+              }
+            }
+          }
+        }
       }
     });
+
   }
 
   private async verificarMaterias(id: number){
