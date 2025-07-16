@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 
-export class ResponseUsuarioDto{
+export class ResponseUsuariosDto{
     id: number;
     nome: string;
     email: string;

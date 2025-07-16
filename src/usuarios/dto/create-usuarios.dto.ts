@@ -1,7 +1,7 @@
-import { IsEmail, IsEnum, IsString, IsStrongPassword, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsEnum, IsNumber, IsString, IsStrongPassword, MaxLength, MinLength } from "class-validator";
 import { Funcao } from "../../enums/funcao.enum";
 
-export class CreateUsuarioDto {
+export class CreateUsuariosDto {
 
     @IsString()
     nome: string;
@@ -28,4 +28,7 @@ export class CreateUsuarioDto {
 
     @IsString()
     cidade: string;
+
+    @IsNumber()
+    turmaId: number
 }

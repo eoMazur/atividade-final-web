@@ -1,46 +1,46 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { CreateUsuariosDto } from './dto/create-usuarios.dto';
+import { UpdateUsuariosDto } from './dto/update-usuarios.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
-import { ResponseUsuarioDto } from './dto/response-usuario.dto';
+import { ResponseUsuariosDto } from './dto/response-usuarios.dto';
 
 @Injectable()
 export class UsuariosService {
 
   constructor(private readonly prisma: PrismaService){}
 
-  async create(createUsuarioDto: CreateUsuarioDto) {
+  async create(createUsuariosDto: CreateUsuariosDto) {
     
-    return this.prisma.usuario.create({
-      data: createUsuarioDto
+    return this.prisma.usuarios.create({
+      data: createUsuariosDto
     })
   }
 
   async findAll() {
-    const usuarios = this.prisma.usuario.findMany();
+    const usuarios = this.prisma.usuarios.findMany();
 
     return (await usuarios).map(usuario => {
-      return plainToInstance(ResponseUsuarioDto, usuario);
+      return plainToInstance(ResponseUsuariosDto, usuario);
     })
   }
 
   async findOne(id: number) {
     await this.verificarUsuario(id);
 
-    const usuario = this.prisma.usuario.findUnique({
+    const usuario = this.prisma.usuarios.findUnique({
       where: {
         id: id
       }
     })
 
-    return plainToInstance(ResponseUsuarioDto, usuario);
+    return plainToInstance(ResponseUsuariosDto, usuario);
   }
 
-  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+  async update(id: number, updateUsuarioDto: UpdateUsuariosDto) {
     await this.verificarUsuario(id);
 
-    return this.prisma.usuario.update({
+    return this.prisma.usuarios.update({
       data: {
         nome: updateUsuarioDto.nome,
         cidade: updateUsuarioDto.cidade,
@@ -58,7 +58,7 @@ export class UsuariosService {
   async remove(id: number) {
     await this.verificarUsuario(id);
 
-    return this.prisma.usuario.delete({
+    return this.prisma.usuarios.delete({
       where: {
         id: id
       }
@@ -66,7 +66,7 @@ export class UsuariosService {
   }
 
   private async verificarUsuario(id: number){
-    if(!(await this.prisma.usuario.count({
+    if(!(await this.prisma.usuarios.count({
       where: {
         id
       }

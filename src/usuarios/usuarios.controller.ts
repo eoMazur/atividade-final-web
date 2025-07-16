@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { CreateUsuariosDto } from './dto/create-usuarios.dto';
+import { UpdateUsuariosDto } from './dto/update-usuarios.dto';
 import { ParamId } from '../decorators/param-id.decorator';
 
 @Controller('usuarios')
@@ -9,7 +9,7 @@ export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Post()
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
+  create(@Body() createUsuarioDto: CreateUsuariosDto) {
     return this.usuariosService.create(createUsuarioDto);
   }
 
@@ -24,7 +24,7 @@ export class UsuariosController {
   }
 
   @Patch(':id')
-  update(@ParamId() id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+  update(@ParamId() id: number, @Body() updateUsuarioDto: UpdateUsuariosDto) {
     return this.usuariosService.update(+id, updateUsuarioDto);
   }
 
