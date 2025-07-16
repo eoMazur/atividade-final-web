@@ -43,6 +43,7 @@ model Turmas{
 model Materias{
   id Int @id @default(autoincrement())
   nome String
+  descricao String
   turmas TurmasMateriais[]
 
 }

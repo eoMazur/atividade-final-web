@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class MateriasService {
-  create(createMateriaDto: CreateMateriaDto) {
-    return 'This action adds a new materia';
+
+  constructor(private readonly prisma: PrismaService){}
+
+  async create(createMateriaDto: CreateMateriaDto) {
+    return this.prisma.materias.create({
+      data: createMateriaDto
+    });
   }
 
-  findAll() {
-    return `This action returns all materias`;
+  async findAll() {
+    return this.prisma.materias.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} materia`;
+  async findOne(id: number) {
+    await this.verificarMaterias(id);
+
+    return this.prisma.materias.findUnique({
+      where: {
+        id: id
+      }
+    });
   }
 
-  update(id: number, updateMateriaDto: UpdateMateriaDto) {
-    return `This action updates a #${id} materia`;
+  async update(id: number, updateMateriaDto: UpdateMateriaDto) {
+    await this.verificarMaterias(id);
+
+    return this.prisma.materias.update({
+      where: {
+        id: id
+      },
+      data: updateMateriaDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} materia`;
+  async remove(id: number) {
+    await this.verificarMaterias(id);
+
+    return this.prisma.materias.delete({
+      where: {
+        id: id
+      }
+    });
+  }
+
+  private async verificarMaterias(id: number){
+      if(!(await this.prisma.materias.count({
+        where: {
+          id
+        }
+      }))){
+        throw new NotFoundException(`Essa materia com ${id} não existe`);
+      }
   }
 }
